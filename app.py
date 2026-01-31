@@ -1,14 +1,6 @@
-from flask import Flask, jsonify, render_template
+from app import create_app
 
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return render_template("home.html")
-
-@app.route("/health")
-def health():
-    return jsonify({"status": "ok"})
+app = create_app()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
