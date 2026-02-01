@@ -16,6 +16,12 @@ def arithmetic():
 
     if a is None or b is None or operation is None:
         return jsonify({"error": "Missing required fields"}), 400
+    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
+        return jsonify({"error": "Fields 'a' and 'b' must be numbers"}), 400
+
+    if not isinstance(operation, str):
+        return jsonify({"error": "Field 'operation' must be a string"}), 400
+
 
     if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
         return jsonify({"error": "Fields 'a' and 'b' must be numbers"}), 400

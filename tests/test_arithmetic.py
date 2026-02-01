@@ -48,12 +48,22 @@ def test_non_number_fields(client):
     assert resp.status_code == 400
     assert "error" in resp.get_json()
 
+
+def test_non_string_operation(client):
+    resp = client.post('/arithmetic', json={"a": 1, "b": 2, "operation": 123})
+    assert resp.status_code == 400
+    assert "error" in resp.get_json()
+
 def test_non_json_request(client):
     resp = client.post('/arithmetic', data="not json", content_type='text/plain')
     assert resp.status_code == 400
     assert "error" in resp.get_json()
 
-def test_non_dict_json(client):
+def test_invalid_json_body(client):
+    resp = client.post('/arithmetic', data='["not", "a", "dict"]', content_type='application/json')
+
+    def test_non_dict_json(client):
     resp = client.post('/arithmetic', json=["not", "a", "dict"])
+
     assert resp.status_code == 400
     assert "error" in resp.get_json()
