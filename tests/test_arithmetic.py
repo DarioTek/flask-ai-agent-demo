@@ -26,7 +26,7 @@ def test_multiply(client):
 def test_divide(client):
     resp = client.post('/arithmetic', json={"a": 10, "b": 2, "operation": "divide"})
     assert resp.status_code == 200
-    assert resp.get_json() == {"result": 5.0}
+    assert resp.get_json() == {"result": 5}
 
 def test_divide_by_zero(client):
     resp = client.post('/arithmetic', json={"a": 10, "b": 0, "operation": "divide"})
@@ -36,19 +36,24 @@ def test_divide_by_zero(client):
 def test_invalid_operation(client):
     resp = client.post('/arithmetic', json={"a": 1, "b": 2, "operation": "modulo"})
     assert resp.status_code == 400
-    assert resp.get_json() == {"error": "unsupported operation"}
+    assert resp.get_json() == {"error": "Unsupported operation"}
 
 def test_missing_fields(client):
     resp = client.post('/arithmetic', json={"a": 1, "operation": "add"})
     assert resp.status_code == 400
     assert "error" in resp.get_json()
 
-def test_non_json(client):
-    resp = client.post('/arithmetic', data="notjson", content_type='text/plain')
+def test_non_number_fields(client):
+    resp = client.post('/arithmetic', json={"a": "foo", "b": 2, "operation": "add"})
     assert resp.status_code == 400
     assert "error" in resp.get_json()
 
-def test_non_number_inputs(client):
-    resp = client.post('/arithmetic', json={"a": "foo", "b": 2, "operation": "add"})
+def test_non_json_request(client):
+    resp = client.post('/arithmetic', data="not json", content_type='text/plain')
+    assert resp.status_code == 400
+    assert "error" in resp.get_json()
+
+def test_non_dict_json(client):
+    resp = client.post('/arithmetic', json=["not", "a", "dict"])
     assert resp.status_code == 400
     assert "error" in resp.get_json()
