@@ -1,7 +1,7 @@
 from flask import Flask
-from app.routes.arithmetic import arithmetic_bp
+from .routes import register_routes
 
 def create_app():
     app = Flask(__name__)
-    app.register_blueprint(arithmetic_bp)
+    register_routes(app)
     return app
