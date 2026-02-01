@@ -26,7 +26,7 @@ def test_multiply(client):
 def test_divide(client):
     resp = client.post('/arithmetic', json={"a": 10, "b": 2, "operation": "divide"})
     assert resp.status_code == 200
-    assert resp.get_json() == {"result": 5.0}
+    assert resp.get_json() == {"result": 5}
 
 def test_divide_by_zero(client):
     resp = client.post('/arithmetic', json={"a": 10, "b": 0, "operation": "divide"})
@@ -48,6 +48,7 @@ def test_non_number_fields(client):
     assert resp.status_code == 400
     assert "error" in resp.get_json()
 
+
 def test_non_string_operation(client):
     resp = client.post('/arithmetic', json={"a": 1, "b": 2, "operation": 123})
     assert resp.status_code == 400
@@ -60,5 +61,9 @@ def test_non_json_request(client):
 
 def test_invalid_json_body(client):
     resp = client.post('/arithmetic', data='["not", "a", "dict"]', content_type='application/json')
+
+    def test_non_dict_json(client):
+    resp = client.post('/arithmetic', json=["not", "a", "dict"])
+
     assert resp.status_code == 400
     assert "error" in resp.get_json()
