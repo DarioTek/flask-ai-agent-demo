@@ -17,13 +17,13 @@ def arithmetic():
     if not isinstance(a, (int, float)) or not isinstance(b, (int, float)) or not isinstance(operation, str):
         return jsonify({"error": "invalid input"}), 400
 
-    if operation == "add":
+    if operation == 'add':
         result = a + b
-    elif operation == "subtract":
+    elif operation == 'subtract':
         result = a - b
-    elif operation == "multiply":
+    elif operation == 'multiply':
         result = a * b
-    elif operation == "divide":
+    elif operation == 'divide':
         if b == 0:
             return jsonify({"error": "division by zero"}), 400
         result = a / b
